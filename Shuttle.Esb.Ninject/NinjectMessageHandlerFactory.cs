@@ -49,7 +49,7 @@ namespace Shuttle.Esb.Ninject
             }
             catch (Exception ex)
             {
-                _log.Warning(string.Format(NinjectResources.RegisterHandlersException, assembly.FullName,
+                _log.Warning(string.Format(EsbResources.RegisterHandlersException, assembly.FullName,
                     ex.AllMessages()));
             }
 
