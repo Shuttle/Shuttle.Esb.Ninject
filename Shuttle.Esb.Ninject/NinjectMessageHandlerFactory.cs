@@ -37,7 +37,7 @@ namespace Shuttle.Esb.Ninject
             {
                 foreach (var type in _reflectionService.GetTypes(MessageHandlerType, assembly))
                 {
-                    var messageType = type.FirstInterface(MessageHandlerType).First().GenericTypeArguments[0];
+                    var messageType = type.FirstInterface(MessageHandlerType).First().GetGenericArguments()[0];
 
                     if (!_messageHandlerTypes.ContainsKey(messageType))
                     {
