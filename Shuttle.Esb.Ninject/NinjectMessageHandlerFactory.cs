@@ -37,14 +37,21 @@ namespace Shuttle.Esb.Ninject
             {
                 foreach (var type in _reflectionService.GetTypes(MessageHandlerType, assembly))
                 {
-                    var messageType = type.FirstInterface(MessageHandlerType).First().GetGenericArguments()[0];
-
-                    if (!_messageHandlerTypes.ContainsKey(messageType))
+                    foreach (var @interface in type.GetInterfaces())
                     {
-                        _messageHandlerTypes.Add(messageType, type);
-                    }
+                        var messageType = @interface.GetGenericArguments()[0];
 
-                    _kernel.Bind(MessageHandlerType.MakeGenericType(messageType)).To(type).InTransientScope();
+                        if (!_messageHandlerTypes.ContainsKey(messageType))
+                        {
+                            _messageHandlerTypes.Add(messageType, type);
+                        }
+                        else
+                        {
+                            _log.Warning(string.Format(NinjectResources.DuplicateMessageHandlerIgnored, _messageHandlerTypes[messageType].FullName, messageType.FullName, type.FullName));
+                        }
+
+                        _kernel.Bind(MessageHandlerType.MakeGenericType(messageType)).To(type).InTransientScope();
+                    }
                 }
             }
             catch (Exception ex)
