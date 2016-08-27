@@ -1,6 +1,6 @@
 ﻿namespace Shuttle.Esb.Ninject.Tests
 {
-    public class SimpleMessageHandler : 
+    public class AnotherSimpleMessageHandler : 
         IMessageHandler<SimpleCommand>,
         IMessageHandler<SimpleEvent>
     {

@@ -39,6 +39,11 @@ namespace Shuttle.Esb.Ninject
                 {
                     foreach (var @interface in type.GetInterfaces())
                     {
+                        if (!@interface.IsAssignableTo(MessageHandlerType))
+                        {
+                            continue;
+                        }
+
                         var messageType = @interface.GetGenericArguments()[0];
 
                         if (!_messageHandlerTypes.ContainsKey(messageType))

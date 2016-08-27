@@ -17,7 +17,9 @@ namespace Shuttle.Esb.Ninject.Tests
             factory.RegisterHandlers(GetType().Assembly);
 
             Assert.IsTrue(factory.MessageTypesHandled.Contains(typeof (SimpleCommand)));
+            Assert.IsTrue(factory.MessageTypesHandled.Contains(typeof (SimpleEvent)));
             Assert.IsNotNull(factory.CreateHandler(new SimpleCommand()));
+            Assert.IsNotNull(factory.CreateHandler(new SimpleEvent()));
         }
     }
 }
