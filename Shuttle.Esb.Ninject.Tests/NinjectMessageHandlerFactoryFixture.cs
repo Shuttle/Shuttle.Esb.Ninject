@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ninject;
 using NUnit.Framework;
+using Shuttle.Esb.Ninject.Tests.Duplicate;
 
 namespace Shuttle.Esb.Ninject.Tests
 {
@@ -20,6 +22,17 @@ namespace Shuttle.Esb.Ninject.Tests
             Assert.IsTrue(factory.MessageTypesHandled.Contains(typeof (SimpleEvent)));
             Assert.IsNotNull(factory.CreateHandler(new SimpleCommand()));
             Assert.IsNotNull(factory.CreateHandler(new SimpleEvent()));
+        }
+
+
+        [Test]
+        public void Should_fail_when_attempting_to_register_duplicate_handlers()
+        {
+            var kernel = new StandardKernel();
+
+            var factory = new NinjectMessageHandlerFactory(kernel);
+
+            Assert.Throws<InvalidOperationException>(() => factory.RegisterHandlers(typeof(DuplicateCommand).Assembly));
         }
     }
 }

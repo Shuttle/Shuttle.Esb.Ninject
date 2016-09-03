@@ -24,11 +24,11 @@ namespace Shuttle.Esb.Ninject
             _log = Log.For(this);
         }
 
-        public override IMessageHandler CreateHandler(object message)
+        public override object CreateHandler(object message)
         {
             var all = _kernel.GetAll(MessageHandlerType.MakeGenericType(message.GetType())).ToList();
 
-            return all.Count != 0 ? (IMessageHandler)all[0] : null;
+            return all.Count != 0 ? all[0] : null;
         }
 
         public override IMessageHandlerFactory RegisterHandlers(Assembly assembly)
@@ -37,32 +37,43 @@ namespace Shuttle.Esb.Ninject
             {
                 foreach (var type in _reflectionService.GetTypes(MessageHandlerType, assembly))
                 {
-                    foreach (var @interface in type.GetInterfaces())
-                    {
-                        if (!@interface.IsAssignableTo(MessageHandlerType))
-                        {
-                            continue;
-                        }
-
-                        var messageType = @interface.GetGenericArguments()[0];
-
-                        if (!_messageHandlerTypes.ContainsKey(messageType))
-                        {
-                            _messageHandlerTypes.Add(messageType, type);
-                        }
-                        else
-                        {
-                            _log.Warning(string.Format(NinjectResources.DuplicateMessageHandlerIgnored, _messageHandlerTypes[messageType].FullName, messageType.FullName, type.FullName));
-                        }
-
-                        _kernel.Bind(MessageHandlerType.MakeGenericType(messageType)).To(type).InTransientScope();
-                    }
+                    RegisterHandler(type);
                 }
             }
             catch (Exception ex)
             {
-                _log.Warning(string.Format(EsbResources.RegisterHandlersException, assembly.FullName,
+                _log.Fatal(string.Format(EsbResources.RegisterHandlersException, assembly.FullName,
                     ex.AllMessages()));
+
+                throw;
+            }
+
+            return this;
+        }
+
+        public override IMessageHandlerFactory RegisterHandler(Type type)
+        {
+            Guard.AgainstNull(type,"type");
+            
+            foreach (var @interface in type.GetInterfaces())
+            {
+                if (!@interface.IsAssignableTo(MessageHandlerType))
+                {
+                    continue;
+                }
+
+                var messageType = @interface.GetGenericArguments()[0];
+
+                if (!_messageHandlerTypes.ContainsKey(messageType))
+                {
+                    _messageHandlerTypes.Add(messageType, type);
+                }
+                else
+                {
+                    throw new InvalidOperationException(string.Format(NinjectResources.DuplicateMessageHandlerIgnored, _messageHandlerTypes[messageType].FullName, messageType.FullName, type.FullName));
+                }
+
+                _kernel.Bind(MessageHandlerType.MakeGenericType(messageType)).To(type).InTransientScope();
             }
 
             return this;
@@ -83,7 +94,7 @@ namespace Shuttle.Esb.Ninject
             }
         }
 
-        public override void ReleaseHandler(IMessageHandler handler)
+        public override void ReleaseHandler(object handler)
         {
             base.ReleaseHandler(handler);
 

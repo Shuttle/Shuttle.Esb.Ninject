@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D4E8EF0C-C9C2-4370-A8CB-B1C3E7FC1D9B}</ProjectGuid>
+    <ProjectGuid>{7647C6A3-29C1-496A-961A-7771D6CA7452}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Shuttle.Esb.Ninject.Tests</RootNamespace>
-    <AssemblyName>Shuttle.Esb.Ninject.Tests</AssemblyName>
+    <RootNamespace>Shuttle.Esb.Ninject.Tests.Duplicate</RootNamespace>
+    <AssemblyName>Shuttle.Esb.Ninject.Tests.Duplicate</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,14 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Shuttle.Core.Infrastructure, Version=4.2.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Shuttle.Core.Infrastructure.4.2.4\lib\net452-full\Shuttle.Core.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -56,24 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NinjectMessageHandlerFactoryFixture.cs" />
+    <Compile Include="DuplicateCommand.cs" />
+    <Compile Include="DuplicateMessageHandler1.cs" />
+    <Compile Include="DuplicateMessageHandler2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleCommand.cs" />
-    <Compile Include="SimpleEvent.cs" />
-    <Compile Include="SimpleMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shuttle.Esb.Ninject.Tests.Duplicate\Shuttle.Esb.Ninject.Tests.Duplicate.csproj">
-      <Project>{7647C6A3-29C1-496A-961A-7771D6CA7452}</Project>
-      <Name>Shuttle.Esb.Ninject.Tests.Duplicate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Shuttle.Esb.Ninject\Shuttle.Esb.Ninject.csproj">
-      <Project>{1BC73C95-62C4-4668-913B-2B47C098CA06}</Project>
-      <Name>Shuttle.Esb.Ninject</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
