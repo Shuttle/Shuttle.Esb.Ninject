@@ -1,3 +1,5 @@
+> ***Please note:*** From v8.0.0 this package has been superceded by [Shuttle.Core.Ninject](https://github.com/Shuttle/Shuttle.Core.Ninject).
+
 # Shuttle.Esb.Ninject
 
 Ninject implementation of the `IMessageHandlerFactory` for use with Shuttle.Esb.
